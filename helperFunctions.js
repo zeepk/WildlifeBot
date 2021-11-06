@@ -18,26 +18,43 @@ export const formatCritterResponse = (data, critterType) => {
 	const speed = `Speed: ${data['speed']}`;
 	const shadow = `Shadow size: ${data['shadow']}`;
 
-
 	let monthsText = 'Can be found all year long';
 	if (!availability['isAllYear']) {
 		const northMonths = availability['month-northern'].split('-');
-		const startMonthNorthern = (months[Number(northMonths[0]) - 1])
-		const endMonthNorthern = (months[Number(northMonths[1]) - 1])
+		const startMonthNorthern = months[Number(northMonths[0]) - 1];
+		const endMonthNorthern = months[Number(northMonths[1]) - 1];
 
 		const southMonths = availability['month-southern'].split('-');
-		const startMonthSouthern = (months[Number(southMonths[0]) - 1])
-		const endMonthSouthern = (months[Number(southMonths[1]) - 1])
+		const startMonthSouthern = months[Number(southMonths[0]) - 1];
+		const endMonthSouthern = months[Number(southMonths[1]) - 1];
 
 		monthsText = `${startMonthNorthern}-${endMonthNorthern} (northern hemisphere)\n${startMonthSouthern}-${endMonthSouthern} (southern hemisphere)`;
 	}
 
-	let creatureData = critterType === CritterType.SEA ? `\n${speed}` : `\n${location}\n${rarity}`
+	let creatureData =
+		critterType === CritterType.SEA ? `\n${speed}` : `\n${location}\n${rarity}`;
 	if (critterType !== CritterType.BUGS) {
-		creatureData += `\n${shadow}`
+		creatureData += `\n${shadow}`;
 	}
 
 	const response = `${name}\n${monthsText}\n${time}${creatureData}\n${iconUri}`;
+
+	return response;
+};
+
+export const formatVillagerResponse = (data) => {
+	const name = data['name']['name-USen'].replace(
+		/(?:^|\s|["'([{])+\S/g,
+		(match) => match.toUpperCase(),
+	);
+	const imageUri = data['image_uri'];
+	const saying = data['saying'];
+	const birthday = `Birthday: ${data['birthday-string']}`;
+	const species = `Species: ${data['species']}`;
+	const personality = `Personality: ${data['personality']}`;
+	const gender = `Gender: ${data['gender']}`;
+
+	const response = `${name}\n*"${saying}"*\n${gender}\n${species}\n${personality}\n${birthday}\n${imageUri}`;
 
 	return response;
 };

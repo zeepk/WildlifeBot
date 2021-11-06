@@ -1,5 +1,9 @@
 import commandList from './commands.js';
-import { startsWith, formatCritterResponse } from './helperFunctions.js';
+import {
+	startsWith,
+	formatCritterResponse,
+	formatVillagerResponse,
+} from './helperFunctions.js';
 import { CritterType } from './constants.js';
 import fetch from 'node-fetch';
 
@@ -17,7 +21,6 @@ const getResponse = async (message) => {
 
 	// villager/ac/wiki
 	if (
-		startsWith(message, commands.villager.command) ||
 		startsWith(message, commands.ac.command) ||
 		startsWith(message, commands.wiki.command)
 	) {
@@ -75,6 +78,28 @@ const getResponse = async (message) => {
 
 		return formatCritterResponse(data, CritterType.SEA);
 	}
+
+	// villagers
+	if (startsWith(message, commands.villager.command)) {
+		const response = await fetch(commands.villager.response);
+		const apiResponse = await response.json();
+		const searchTerm = message
+			.split(commands.villager.command)[1]
+			.replace(/(?:^|\s|["'([{])+\S/g, (match) => match.toUpperCase());
+
+		const villagerList = Object.entries(apiResponse).map(
+			(keyValuePair) => keyValuePair[1],
+		);
+		const data = villagerList.find(
+			(v) => v['name']['name-USen'] === searchTerm,
+		);
+		if (!data) {
+			return `Unable to find ${searchTerm} in the villagers database.`;
+		}
+
+		return formatVillagerResponse(data);
+	}
+
 	return '';
 };
 export default getResponse;
