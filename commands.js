@@ -35,6 +35,14 @@ const commandList = {
 		command: '!fish ',
 		response: 'https://acnhapi.com/v1/fish',
 	},
+	bugs: {
+		command: '!bugs ',
+		response: 'https://acnhapi.com/v1/bugs',
+	},
+	sea: {
+		command: '!sea ',
+		response: 'https://acnhapi.com/v1/sea',
+	},
 };
 
 export default commandList;

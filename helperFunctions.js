@@ -1,7 +1,9 @@
+import { CritterType, months } from './constants.js';
+
 export const startsWith = (message, stringToSearch) =>
 	message.indexOf(stringToSearch) === 0;
 
-export const formatCritterResponse = (data) => {
+export const formatCritterResponse = (data, critterType) => {
 	const name = data['name']['name-USen'].replace(
 		/(?:^|\s|["'([{])+\S/g,
 		(match) => match.toUpperCase(),
@@ -13,13 +15,29 @@ export const formatCritterResponse = (data) => {
 		: `Time: ${availability['time']}`;
 	const location = `Location: ${availability['location']}`;
 	const rarity = `Rarity: ${availability['rarity']}`;
+	const speed = `Speed: ${data['speed']}`;
+	const shadow = `Shadow size: ${data['shadow']}`;
+
 
 	let monthsText = 'Can be found all year long';
 	if (!availability['isAllYear']) {
-		monthsText = `Months: ${availability['month-northern']} (northern hemisphere)\nMonths: ${availability['month-southern']} (southern hemisphere)`;
+		const northMonths = availability['month-northern'].split('-');
+		const startMonthNorthern = (months[Number(northMonths[0]) - 1])
+		const endMonthNorthern = (months[Number(northMonths[1]) - 1])
+
+		const southMonths = availability['month-southern'].split('-');
+		const startMonthSouthern = (months[Number(southMonths[0]) - 1])
+		const endMonthSouthern = (months[Number(southMonths[1]) - 1])
+
+		monthsText = `${startMonthNorthern}-${endMonthNorthern} (northern hemisphere)\n${startMonthSouthern}-${endMonthSouthern} (southern hemisphere)`;
 	}
 
-	const response = `${name}\n${monthsText}\n${time}\n${location}\n${rarity}\n${iconUri}`;
+	let creatureData = critterType === CritterType.SEA ? `\n${speed}` : `\n${location}\n${rarity}`
+	if (critterType !== CritterType.BUGS) {
+		creatureData += `\n${shadow}`
+	}
+
+	const response = `${name}\n${monthsText}\n${time}${creatureData}\n${iconUri}`;
 
 	return response;
 };

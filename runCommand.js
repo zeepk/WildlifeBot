@@ -1,5 +1,6 @@
 import commandList from './commands.js';
 import { startsWith, formatCritterResponse } from './helperFunctions.js';
+import { CritterType } from './constants.js';
 import fetch from 'node-fetch';
 
 const getResponse = async (message) => {
@@ -38,7 +39,41 @@ const getResponse = async (message) => {
 			return `Unable to find ${searchTerm} in the fish database.`;
 		}
 
-		return formatCritterResponse(data);
+		return formatCritterResponse(data, CritterType.FISH);
+	}
+
+	// bugs
+	if (startsWith(message, commands.bugs.command)) {
+		const response = await fetch(commands.bugs.response);
+		const apiResponse = await response.json();
+		const searchTerm = message
+			.split(commands.bugs.command)[1]
+			.toLowerCase()
+			.replace(/ /g, '_');
+
+		const data = apiResponse[searchTerm];
+		if (!data) {
+			return `Unable to find ${searchTerm} in the bugs database.`;
+		}
+
+		return formatCritterResponse(data, CritterType.BUGS);
+	}
+
+	// sea creatures
+	if (startsWith(message, commands.sea.command)) {
+		const response = await fetch(commands.sea.response);
+		const apiResponse = await response.json();
+		const searchTerm = message
+			.split(commands.sea.command)[1]
+			.toLowerCase()
+			.replace(/ /g, '_');
+
+		const data = apiResponse[searchTerm];
+		if (!data) {
+			return `Unable to find ${searchTerm} in the sea creatures database.`;
+		}
+
+		return formatCritterResponse(data, CritterType.SEA);
 	}
 	return '';
 };
