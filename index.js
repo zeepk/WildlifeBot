@@ -1,6 +1,8 @@
-require('dotenv').config();
-const Discord = require('discord.js');
-const constants = require('./constants');
+import dotenv from 'dotenv';
+import Discord from 'discord.js';
+import getResponse from './runCommand.js';
+dotenv.config();
+
 const client = new Discord.Client({
 	allowedMentions: {
 		parse: ['users', 'roles'],
@@ -26,11 +28,18 @@ client.on('messageCreate', async (message) => {
 	if (!content) {
 		return;
 	}
-	if (content === '!ac') {
-		message.channel.send('Hi!');
+	const response = await getResponse(content);
+	if (response) {
+		message.channel.send(response);
 	}
-	if (content.indexOf(constants.COMMAND_PREFIX) === 0 && content.length >= 5) {
-		const searchTerm = content.split(constants.COMMAND_PREFIX)[1];
-		message.channel.send(searchTerm);
-	}
+	// if (content === 'test') {
+	// }
+	// if (content === '!commands') {
+	// 	message.channel.send(commands.commands);
+	// }
+
+	// if (content.indexOf('!villager ') === 0) {
+	// 	const searchTerm = content.split('!villager ')[1];
+	// 	message.channel.send(constants.nookipediaUrlPrefix + searchTerm);
+	// }
 });

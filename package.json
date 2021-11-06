@@ -1,15 +1,17 @@
 {
-  "name": "wildlife-bot",
-  "version": "1.0.0",
-  "description": "Discord bot for checking wildlife availability in Animal Crossing: New Horizons",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Matt Hughes",
-  "license": "ISC",
-  "dependencies": {
-    "discord.js": "^13.3.1",
-    "dotenv": "^10.0.0"
-  }
+	"name": "wildlife-bot",
+	"version": "1.0.0",
+	"description": "Discord bot for checking wildlife availability in Animal Crossing: New Horizons",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Matt Hughes",
+	"license": "ISC",
+	"dependencies": {
+		"discord.js": "^13.3.1",
+		"dotenv": "^10.0.0",
+		"node-fetch": "^3.0.0"
+	},
+	"type": "module"
 }
