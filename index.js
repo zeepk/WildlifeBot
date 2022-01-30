@@ -46,6 +46,12 @@ client.on("messageCreate", async (message) => {
 });
 
 var app = express();
+app.post("/release/:name", function (req, res) {
+  const name = req.params.name;
+  const message = `A new release has been published for AC Wildlife: ${name}\nCheck out the details here: https://github.com/zeepk/Wildlife/releases/latest`;
+  client.channels.cache.get("933990639178252308").send(message);
+  res.send("hello world");
+});
 app.post("/send", function (req, res) {
   console.log(req);
   client.channels.cache.get("933990639178252308").send("howdy");
