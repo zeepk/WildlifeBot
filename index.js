@@ -52,6 +52,15 @@ app.post("/release/:name", function (req, res) {
   client.channels.cache.get("931619999108448296").send(message);
   res.send("hello world");
 });
+app.post("/push", function (req, res) {
+  console.log(req);
+  client.channels.cache
+    .get("933990639178252308")
+    .send(
+      "A new push has been published for AC Wildlife\nCheck out the latest version of the code here: https://github.com/zeepk/Wildlife"
+    );
+  res.send("hello world");
+});
 app.post("/send", function (req, res) {
   console.log(req);
   client.channels.cache.get("933990639178252308").send("howdy");
